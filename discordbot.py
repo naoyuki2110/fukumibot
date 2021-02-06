@@ -53,6 +53,10 @@ async def on_message(message):
           await webhook.send(content=message.content,
               username=f"{message.author} | {message.guild.name}",
               avatar_url=message.author.avatar_url_as(format="png"))
+            if message.attachment.url.endswith(("png", "jpg", "jpeg")):
+                await webhook.send(content=attachment.url,
+                username=f"{message.author} | {message.guild.name}",
+                avatar_url=message.author.avatar_url_as(format="png"))
 
 @bot.event
 async def on_command_error(ctx, error):
