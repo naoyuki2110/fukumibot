@@ -114,7 +114,7 @@ async def embed(ctx):
 
 @bot.command()
 async def com(ctx):
-  embed=discord.Embed(title="コマンド一覧",description="**ユーティリティ**\n`com`:現在のコマンド\n`credit`:制作者が見れます\n`invite`:BOTの招待リンクを表示します\n`send`:他のチャンネルへメッセージを送信できます\n`fm!send <channel_id> <待機秒数(半角)> <メッセージ内容>`\n`sendguide`:sendコマンドについてのガイドラインです。利用する前に必ずお読みください。\n\n**ゲーム**\n`janken`:じゃんけんに挑戦できます\n`omikuji`:おみくじがひけます\n`dice`:サイコロができます\n`fm!dice <最大値(半角)>`\n\n**グローバルチャット**\n`gcjoin`:コマンドを実行したチャンネルにグローバルチャットを作成します。",color=0x05b9e6)
+  embed=discord.Embed(title="コマンド一覧",description="**ユーティリティ**\n`com`:現在のコマンド\n`credit`:制作者が見れます\n`invite`:BOTの招待リンクを表示します\n`send`:他のチャンネルへメッセージを送信できます\n`fm!send <channel_id> <待機秒数(半角)> <メッセージ内容>`\n`sendguide`:sendコマンドについてのガイドラインです。利用する前に必ずお読みください。\n\n**ゲーム**\n`janken`:じゃんけんに挑戦できます\n`omikuji`:おみくじがひけます\n`dice`:サイコロができます\n`fm!dice <最大値(半角)>`\n`say`:メッセージをそのまま返します\n`fm!say <メッセージ>`\n\n**グローバルチャット**\n`gcjoin`:コマンドを実行したチャンネルにグローバルチャットを作成します。",color=0x05b9e6)
   await ctx.send(embed=embed)
 
 @bot.command()
@@ -250,8 +250,8 @@ async def say(ctx, msg):
   await ctx.send(msg)
   
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def gcjoin(ctx):
- GLOBAL_CH_NAME = "fukumi-global"
  embed=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\n準備中...",color=0x05b9e6)
  embed2=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\nチャンネル名を変更しています...",color=0x05b9e6)
  embed3=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\nWebhookを作成しています。...",color=0x05b9e6)
@@ -271,12 +271,5 @@ async def gcjoin(ctx):
  await gcjoinmsg.edit(embed=embed4)
  time.sleep(1.3)
  await gcjoinmsg.edit(embed=embed5)
- time.sleep(1)
- if message.channel.name == GLOBAL_CH_NAME:
-      channels = bot.get_all_channels()
-      global_channels = [ch for ch in channels if ch.name == GLOBAL_CH_NAME]
-
-      for channel in global_channels:
-          await channel.send(embed=embed6)
  
 bot.run(TOKEN)
