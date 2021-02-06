@@ -249,4 +249,34 @@ async def say(ctx, msg):
   await ctx.message.delete()
   await ctx.send(msg)
   
+@bot.command()
+async def gcjoin(ctx):
+ GLOBAL_CH_NAME = "fukumi-global"
+ embed=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\n準備中...",color=0x05b9e6)
+ embed2=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\nチャンネル名を変更しています...",color=0x05b9e6)
+ embed3=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\nWebhookを作成しています。...",color=0x05b9e6)
+ embed4=discord.Embed(title="グローバルチャット作成中",description="このチャンネルにグローバルチャットを作成しています。しばらくお待ちください...\n\n最後の設定を適用しています...",color=0x05b9e6)
+ embed5=discord.Embed(description="このチャンネルにグローバルチャットを作成しました！ほかのサーバーの人との会話を楽しんでくださいっ！",color=0x05f752)
+ embed5.set_author(name="グローバルチャット作成完了", icon_url="https://cdn.discordapp.com/emojis/805241582399914044.png?v=1")
+ embed6=discord.Embed(description=f"新たなサーバーがグローバルチャットに参加しました！\nサーバー:{ctx.message.guild.name}\nチャンネル:{ctx.message.channel.name}",color=0x05f752)
+ embed6.set_author(name="新たなサーバーが参加", icon_url="https://cdn.discordapp.com/emojis/805241582399914044.png?v=1")
+ gcjoinmsg = await ctx.send(embed=embed)
+ time.sleep(2.5)
+ await gcjoinmsg.edit(embed=embed2)
+ time.sleep(1.2)
+ await ctx.message.channel.edit(name="fukumi-global")
+ await gcjoinmsg.edit(embed=embed3)
+ time.sleep(1.6)
+ await ctx.message.channel.create_webhook(name="fukumigc-webhooks")
+ await gcjoinmsg.edit(embed=embed4)
+ time.sleep(1.3)
+ await gcjoinmsg.edit(embed=embed5)
+ time.sleep(1)
+ if message.channel.name == GLOBAL_CH_NAME:
+      channels = bot.get_all_channels()
+      global_channels = [ch for ch in channels if ch.name == GLOBAL_CH_NAME]
+
+      for channel in global_channels:
+          await channel.send(embed=embed6)
+ 
 bot.run(TOKEN)
