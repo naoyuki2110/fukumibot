@@ -26,10 +26,10 @@ mentmsg = ["むっ、なにかな", "なんですみぃ？", "むぅ、いま腹
 async def on_ready():
  print('起動完了しました。')
  while True:
- await bot.change_presence(activity=discord.Game(name="fm!com | グローバルチャットができるようになったよ！"))
- time.sleep(20)
- await bot.change_presence(activity=discord.Game(name=f"fm!com | {bot.guilds}サーバーが利用中"))
- time.sleep(20)
+   await bot.change_presence(activity=discord.Game(name="fm!com | グローバルチャットができるようになったよ！"))
+   time.sleep(20)
+   await bot.change_presence(activity=discord.Game(name=f"fm!com | {bot.guilds}サーバーが利用中"))
+   time.sleep(20)
 
 @bot.event
 async def on_message(message):
