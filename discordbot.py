@@ -4,7 +4,6 @@ from discord.ext import commands
 import time
 import random
 import datetime
-from googletrans import Translator
 import requests
 from bs4 import BeautifulSoup
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
@@ -25,7 +24,6 @@ unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "�
 unsrc = ["青", "黄", "緑", "ライトグリーン", "ピンク", "あなたの好きな", "赤", "オレンジ", "紫", "エメラルドグリーン", "コバルトブルー", "藍", "青緑", "茜", "黄緑", "錆納戸", "紺", "朱", "青磁", "菫", "露草", "常盤", "砥粉", "紅赤", "萌葱", "瑠璃", "ターコイズブルー", "セルリアンブルー", "マラカイトグリーン", "ミッドナイトブルー", "フォレストグリーン"]
 unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "★ ★ ★ ☆ ☆", "★ ★ ★ ★ ☆", "★ ★ ★ ★ ★"]
 mentmsg = ["むっ、なにかな", "なんですみぃ？", "むぅ、いま腹立ててるからはなしかけないで！", "どうしたの？？", "すやすや...ん、むにゃ...", "おおーっ！どうしたのかな？なんでもきいてあげるよー！"]
-translator = Translator()
 ranreacc = 0
 thinkr = ["<:thonk:828451872217366588>", "<:authink:828451874314387497>"]
 lrurl = "https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php"
@@ -291,19 +289,6 @@ async def gcjoin(ctx):
  await gcjoinmsg.edit(embed=embed4)
  time.sleep(1.3)
  await gcjoinmsg.edit(embed=embed5)
-
-@bot.command()
-async def translatefgtgbgrb(ctx, locale, *, msg):
-  print("コマンドOK")
-  trsmsg = translator.translate('テスト', dest='en')
-  print("代入OK")
-  embed=discord.Embed(description=trsmsg.text,color=0x05b9e6)
-  print("Embed代入OK")
-  embed.set_author(name="翻訳結果", icon_url="https://cdn.discordapp.com/emojis/812893291540250645.png?v=1")
-  print("ユーザーOK")
-  await ctx.send(embed=embed)
-  print("送信OK")
-  print(trsmsg.text)
 
 @bot.command()
 async def webtitle(ctx, url):
