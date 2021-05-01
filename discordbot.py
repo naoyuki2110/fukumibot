@@ -4,7 +4,6 @@ from discord.ext import commands
 import time
 import random
 import datetime
-from pyokaka import okaka
 from googletrans import Translator
 import requests
 from bs4 import BeautifulSoup
@@ -292,13 +291,6 @@ async def gcjoin(ctx):
  await gcjoinmsg.edit(embed=embed4)
  time.sleep(1.3)
  await gcjoinmsg.edit(embed=embed5)
-
-@bot.command()
-async def kanc(ctx, *, msg):
- cvresult = okaka.convert(msg)
- embed=discord.Embed(description=cvresult,color=0x05b9e6)
- embed.set_author(name="ローマ字→かな文字変換結果", icon_url="https://cdn.discordapp.com/emojis/812530847886213130.png?v=1")
- await ctx.send(embed=embed)
 
 @bot.command()
 async def translatefgtgbgrb(ctx, locale, *, msg):
