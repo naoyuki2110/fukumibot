@@ -4,9 +4,14 @@ from discord.ext import commands
 import time
 import random
 import datetime
-import os
+from pyokaka import okaka
+from googletrans import Translator
+import requests
+from bs4 import BeautifulSoup
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
-bot = commands.Bot(command_prefix='fm!')
+intents=discord.Intents.default()
+intents.members=True
+bot = commands.Bot(command_prefix='fm!',help_command=None,intents=intents)
 erroremoji = "<:error:804911445900918784>"
 checkemoji = "<:check:805241582399914044>"
 janbr = [":fist:", ":v:", ":hand_splayed:"]
@@ -21,17 +26,34 @@ unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "�
 unsrc = ["青", "黄", "緑", "ライトグリーン", "ピンク", "あなたの好きな", "赤", "オレンジ", "紫", "エメラルドグリーン", "コバルトブルー", "藍", "青緑", "茜", "黄緑", "錆納戸", "紺", "朱", "青磁", "菫", "露草", "常盤", "砥粉", "紅赤", "萌葱", "瑠璃", "ターコイズブルー", "セルリアンブルー", "マラカイトグリーン", "ミッドナイトブルー", "フォレストグリーン"]
 unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "★ ★ ★ ☆ ☆", "★ ★ ★ ★ ☆", "★ ★ ★ ★ ★"]
 mentmsg = ["むっ、なにかな", "なんですみぃ？", "むぅ、いま腹立ててるからはなしかけないで！", "どうしたの？？", "すやすや...ん、むにゃ...", "おおーっ！どうしたのかな？なんでもきいてあげるよー！"]
+translator = Translator()
+ranreacc = 0
+thinkr = ["<:thonk:828451872217366588>", "<:authink:828451874314387497>"]
+lrurl = "https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php"
 
 @bot.event
 async def on_ready():
- print('起動完了しました。')
- await bot.change_presence(activity=discord.Game(name="fm!com | 新機能！「グローバルチャット」ができるようになったよ！"))
+  print('起動完了しました。')
+  print(bot.guilds)
+  while True:
+    guildone = str(bot.guilds)
+    guildtwo = guildone.split(',')
+    guildcount = len(guildtwo)
+    await bot.change_presence(activity=discord.Game(name=f"fm!help | {guildcount}サーバーがBOTを導入中"))
 
 @bot.event
 async def on_message(message):
   await bot.process_commands(message)
   if message.author.bot:
     return
+  if "discord" in message.content:
+    await message.add_reaction('<:DiscordLogo:828436198157975563>')
+  if "ディスコード" in message.content:
+    await message.add_reaction('<:DiscordLogo:828436198157975563>')
+  if "ディスコ" in message.content:
+    await message.add_reaction('<:DiscordLogo:828436198157975563>')
+  if ":thinking:" in message.content:
+    await message.channel.send(random.choice(thinkr))
   if bot.user in message.mentions:
     await message.channel.send(random.choice(mentmsg))
   GLOBAL_CH_NAME = "fukumi-global" # グローバルチャットのチャンネル名
@@ -64,48 +86,29 @@ async def on_command_error(ctx, error):
         embed2=discord.Embed(description=f"BOTかあなたに管理者権限が付与されていません。\n\n:bulb:ヒント:このBOTに管理者権限が付いている役職が付与されていますか？されていない場合はBOTに権限を渡してください。\nあなたに管理者権限が付与されていない可能性があります。サーバーの管理者に連絡をお願いいたします。",color=0xfa2911)
         embed2.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
         await ctx.send(embed=embed2)
+    if isinstance(error, commands.BadArgument):
+        embed3=discord.Embed(description="引数が不正です。コマンドを見直してみてください。",color=0xfa2911)
+        embed3.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
+        await ctx.send(embed=embed3)
 
 @bot.command()
 async def credit(ctx):
- ce = await ctx.send("ㅤ")
- time.sleep(2)
- await ce.edit(content="ーークレジットーー")
- time.sleep(1)
- await ce.edit(content="ーークレジットーー\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="ーークレジットーー\n\ㅤ\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="ーークレジットーー\n\ㅤ\n\ㅤ\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="ーークレジットーー\n\ㅤ\n\ㅤ\n\ㅤ\nBOT総合開発者:naoyuki#5883")
- time.sleep(1)
- await ce.edit(content="ㅤ\n\ㅤ\n\ㅤ\n\ㅤ\nBOT総合開発者:naoyuki#5883\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="ㅤ\n\ㅤ\n\ㅤ\nBOT総合開発者:naoyuki#5883\n\ㅤ\n\このBOTは")
- time.sleep(1)
- await ce.edit(content="ㅤ\n\ㅤ\nBOT総合開発者:naoyuki#5883\n\ㅤ\n\このBOTは\n\皆様のおかげで稼働しています。")
- time.sleep(1)
- await ce.edit(content="ㅤ\nBOT総合開発者:naoyuki#5883\n\ㅤ\n\このBOTは\n\皆様のおかげで稼働しています。\n\これからも応援")
- time.sleep(1)
- await ce.edit(content="BOT総合開発者:naoyuki#5883\n\ㅤ\n\このBOTは\n\皆様のおかげで稼働しています。\n\これからも応援\n\よろしくお願いいたします！")
- time.sleep(1)
- await ce.edit(content="ㅤ\n\このBOTは\n\皆様のおかげで稼働しています。\n\これからも応援\n\よろしくお願いいたします！\nThank you so much for introducing it!!!")
- time.sleep(1)
- await ce.edit(content="このBOTは\n\皆様のおかげで稼働しています。\n\これからも応援\n\よろしくお願いいたします！\nThank you so much for introducing it!!!\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="皆様のおかげで稼働しています。\n\これからも応援\n\よろしくお願いいたします！\nThank you so much for introducing it!!!\n\ㅤ\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="これからも応援\n\よろしくお願いいたします！\nThank you so much for introducing it!!!\n\ㅤ\n\ㅤ\n\ーByー")
- time.sleep(1)
- await ce.edit(content="よろしくお願いいたします！\nThank you so much for introducing it!!!\n\ㅤ\n\ㅤ\n\ーByー\nnaoyuki")
- time.sleep(1)
- await ce.edit(content="Thank you so much for introducing it!!!\n\ㅤ\n\ㅤ\n\ーByー\nnaoyuki\n\ㅤ")
- time.sleep(1)
- await ce.edit(content="ㅤ\n\ㅤ\n\ーByー\nnaoyuki\n\ㅤ\n\ㅤ")
+  user = await bot.fetch_user(524872647042007067)
+  embed=discord.Embed(title="クレジット",description=f"1名\nBOT総合開発者:{user.name}#{user.discriminator}",color=0x05b9e6)
+  await ctx.send(embed=embed)
 
 @bot.command()
-async def ping(ctx):
-  await ctx.send('pong!')
+async def devhelp(ctx):
+  embed=discord.Embed(title="テスト中コマンド",description="**ユーティリティ**\n~~`fm!calc`:指定した和、差、積、商を表示します。<:alpha:812541506191491093>\n`fm!calc <四則演算(半角>`\n記述法は`fm!calchelp`をご覧ください\n`translate`:内容を指定した言語に翻訳します。<:alpha:812541506191491093>\n`fm!translate <ロケールID上2桁> <翻訳内容>`~~",color=0x05b9e6)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def update(ctx):
+  embed=discord.Embed(color=0x05b9e6)
+  embed.set_author(name="v2.1.2, 2.1.3更新情報", icon_url="https://cdn.discordapp.com/emojis/812569029365465108.png?v=1")
+  embed.add_field(name="変更点",value="fmjpcとlastjpとdevhelpとwebtitleコマンドを実装(詳細は`fm!help`)\n\n・ローマ字かな文字変換機能を実装(詳細は`fm!help`)\n・inviteコマンドを削除、linkコマンドに置き換え\n・creditコマンドのレイアウトを修正\n・ヘルプコマンドを`fm!com`から`fm!help`に変更\n・updateコマンドを実装(詳細は`fm!help`)")
+  embed.add_field(name="不具合修正",value="Send、Sayコマンドでメッセージ内容を指定する際半角スペースや改行以降の文字列が表示されない不具合を修正")
+  await ctx.send(embed=embed)
 
 @bot.command()
 async def embed(ctx):
@@ -113,13 +116,31 @@ async def embed(ctx):
   await ctx.send(embed=embed)
 
 @bot.command()
-async def com(ctx):
-  embed=discord.Embed(title="コマンド一覧",description="**ユーティリティ**\n`com`:現在のコマンド\n`credit`:制作者が見れます\n`invite`:BOTの招待リンクを表示します\n`send`:他のチャンネルへメッセージを送信できます\n`fm!send <channel_id> <待機秒数(半角)> <メッセージ内容>`\n`sendguide`:sendコマンドについてのガイドラインです。利用する前に必ずお読みください。\n\n**ゲーム**\n`janken`:じゃんけんに挑戦できます\n`omikuji`:おみくじがひけます\n`dice`:サイコロができます\n`fm!dice <最大値(半角)>`\n`say`:メッセージをそのまま返します\n`fm!say <メッセージ>`\n\n**グローバルチャット**\n`gcjoin`:コマンドを実行したチャンネルにグローバルチャットを作成します。",color=0x05b9e6)
-  await ctx.send(embed=embed)
+async def help(ctx, page):
+  hpage1=discord.Embed(title="コマンド一覧",description="**ユーティリティ**\n`help`:現在のコマンド\n`fm!help <ページ番号(半角)`\n`devhelp`:テスト中のコマンド一覧を表示します\n`credit`:制作者が見れます\n`link`:BOTの招待リンクを表示します\n`send`:他のチャンネルへメッセージを送信できます\n`fm!send <channel_id> <待機秒数(半角)> <メッセージ内容>`\n`sendguide`:sendコマンドについてのガイドラインです。利用する前に必ずお読みください。\n`kanc`:ローマ字からひらがなに変換します\n`fm!kanc <ローマ字(半角)>`\n`update`:最新のBOT更新情報を表示します。\n`webtitle`:指定したサイトのタイトル情報を表示します\n`fm!webtitle <URL>`",color=0x05b9e6)
+  hpage1.set_footer(text="1/4")
+  hpage2=discord.Embed(title="コマンド一覧",description="**ゲーム**\n`janken`:じゃんけんに挑戦できます\n`omikuji`:おみくじがひけます\n`dice`:サイコロができます\n`fm!dice <最大値(半角)>`\n`say`:メッセージをそのまま返します\n`fm!say <メッセージ>`\n`fmjpc`:ふくみぃJACKPOTCHANCEに挑戦できます(メダルはもらえません)\n`lastjp`:最新のふくみぃJACKPOT獲得者を表示します\n`fmimage`:ふくみぃってどんなイメージ？\n`fm!fmimage <イメージ内容>`\n`fmima`:ふくみぃのみんなのイメージを見ることができます",color=0x05b9e6)
+  hpage2.set_footer(text="2/4")
+  hpage3=discord.Embed(title="コマンド一覧",description="**グローバルチャット**\n`gcjoin`:コマンドを実行したチャンネルにグローバルチャットを作成します。",color=0x05b9e6)
+  hpage3.set_footer(text="3/4")
+  hpage4=discord.Embed(title="コマンド一覧",description="**期間限定**\n`legrk`:PNRレギオンランカーズの順位表が見れます。\n`legrktp`:PNRレギオンランカーズの順位表(トレパレTOTAL)が見れます。\n`legrkgjp`:PNRレギオンランカーズの順位表(GJPTOTAL)が見れます。\n`legrkcf`:PNRレギオンランカーズの順位表(CFWINTOTAL)が見れます。\n`legrkcfd`:PNRレギオンランカーズの順位表(CFDUPTOTAL)が見れます。",color=0x05b9e6)
+  hpage4.set_footer(text="4/4")
+  hels=discord.Embed(description="ページが存在しません。\n現在取得可能なページ数は**3**です。",color=0xfa2911)
+  hels.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
+  if page == "1":
+    await ctx.send(embed=hpage1)
+  elif page == "2":
+    await ctx.send(embed=hpage2)
+  elif page == "3":
+    await ctx.send(embed=hpage3)
+  elif page == "4":
+    await ctx.send(embed=hpage4)
+  else:
+    await ctx.send(embed=hels)
 
 @bot.command()
-async def invite(ctx):
-  embed=discord.Embed(title="あなたのサーバーにもBOTを導入",description="ふくみぃBOTの導入URLです。http://bit.do/fmbotinvitenew",color=0x023ded)
+async def link(ctx):
+  embed=discord.Embed(title="関連リンク",description="ふくみぃ関連のリンク集です。\n\n[BOT導入URL](https://discord.com/oauth2/authorize?client_id=754190285382352920&permissions=8&scope=bot)\n[サポートサーバー](https://discord.gg/CuD8jfK)",color=0x023ded)
   await ctx.send(embed=embed)
 
 @bot.command()
@@ -171,7 +192,7 @@ async def omikuji(ctx):
   await omkmsg.edit(embed=omk)
 
 @bot.command()
-async def send(ctx, ch, waitcou, sendmsg):
+async def send(ctx, ch, waitcou, *, sendmsg):
   tme = datetime.datetime.now()
   print ("ーーーーーSendコマンド使用通知ーーーーー")
   print (ctx.message.guild.name)
@@ -184,7 +205,7 @@ async def send(ctx, ch, waitcou, sendmsg):
   seev2=discord.Embed(description=f"<@{ctx.message.author.id}>\n<#{ch}>へメッセージを送信しました。",color=0x05f752)
   seev2.set_author(name="送信完了", icon_url="https://cdn.discordapp.com/emojis/805241582399914044.png?v=1")
   seev3=discord.Embed(description=f"{sendmsg}",color=0x05b9e6)
-  seev3.set_footer(text=f"{tme.year}/{tme.month}/{tme.day} {tme.hour}:{tme.minute}:{tme.second}")
+  seev3.set_footer(text=tme.strftime('%Y/%m/%d %H:%M:%S'))
   seev3.set_author(name=f"{ctx.message.author}", icon_url=ctx.message.author.avatar_url_as(format="png"))
   resch = int(ch)
   await ctx.send(embed=seev)
@@ -221,7 +242,7 @@ async def exsend(ctx, exch):
     await ctx.send(embed=embed)
 
 @bot.command()
-async def ctexsend(ctx, exch, exdesc):
+async def ctexsend(ctx, exch, *, exdesc):
   if ctx.message.author.id == 524872647042007067:
     print ("ーーーーーカスタム警告Sendコマンド使用通知ーーーーー")
     print (ctx.message.channel.name)
@@ -245,10 +266,10 @@ async def dice(ctx, max):
     await ctx.send(embed=embed)
 
 @bot.command()
-async def say(ctx, msg):
+async def say(ctx, *, msg):
   await ctx.message.delete()
   await ctx.send(msg)
-  
+
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def gcjoin(ctx):
@@ -271,5 +292,187 @@ async def gcjoin(ctx):
  await gcjoinmsg.edit(embed=embed4)
  time.sleep(1.3)
  await gcjoinmsg.edit(embed=embed5)
- 
+
+@bot.command()
+async def kanc(ctx, *, msg):
+ cvresult = okaka.convert(msg)
+ embed=discord.Embed(description=cvresult,color=0x05b9e6)
+ embed.set_author(name="ローマ字→かな文字変換結果", icon_url="https://cdn.discordapp.com/emojis/812530847886213130.png?v=1")
+ await ctx.send(embed=embed)
+
+@bot.command()
+async def translatefgtgbgrb(ctx, locale, *, msg):
+  print("コマンドOK")
+  trsmsg = translator.translate('テスト', dest='en')
+  print("代入OK")
+  embed=discord.Embed(description=trsmsg.text,color=0x05b9e6)
+  print("Embed代入OK")
+  embed.set_author(name="翻訳結果", icon_url="https://cdn.discordapp.com/emojis/812893291540250645.png?v=1")
+  print("ユーザーOK")
+  await ctx.send(embed=embed)
+  print("送信OK")
+  print(trsmsg.text)
+
+@bot.command()
+async def webtitle(ctx, url):
+  html = requests.get(url)
+  soup = BeautifulSoup(html.content, "html.parser")
+  embed=discord.Embed(title=f"{url}\nのタイトル情報",description=soup.find("title").text,color=0x05b9e6)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def fmjpc3721632367813yed(ctx):
+  agojpcmsg = await ctx.send("<a:loading1:812923199116410940>抽選中です...")
+  jpcsleep = random.randint(3,15)
+  time.sleep(jpcsleep)
+  await agojpcmsg.delete()
+  jpcrand = random.randint(1,100)
+  if jpcrand >= 1 and jpcrand <= 50:
+    await ctx.send(f"<@{ctx.message.author.id}>**100Win!**\nまた挑戦してだみぃ！")
+  elif jpcrand >= 51 and jpcrand <= 80:
+    await ctx.send(f"<@{ctx.message.author.id}>**200Win!**\nまた挑戦してだみぃ！")
+  elif jpcrand >= 81 and jpcrand <= 99:
+    await ctx.send(f"<@{ctx.message.author.id}>**300Win!**\nまた挑戦してだみぃ！")
+  elif jpcrand == 100:
+    jtme = datetime.datetime.now()
+    jprand = random.randint(1000,99999)
+    await ctx.send(f"<@{ctx.message.author.id}>**J A C K P O T !**\n**Congratulations!!!**\nJACKPOT枚数**{jprand}枚！**\nまた挑戦してだみぃ！")
+    f = open(r'C:\Users\user\Documents\dispy\fukumijackpot.txt', 'w')
+    datalist = [f'獲得者:**{ctx.message.author}**\n', f'JACKPOT枚数:**{jprand}枚**\n', jtme.strftime('%Y/%m/%d %H:%M:%S')]
+    f.writelines(datalist)
+    f.close()
+
+@bot.command()
+async def lastjpftrgbtrbt(ctx):
+  if ctx.message.author.id == 524872647042007067:
+    jp=open(r'C:\Users\user\Documents\dispy\fukumijackpot.txt')
+    jpline=jp.read()
+    embed=discord.Embed(title="ふくみぃJACKPOT最終獲得者",description=jpline,color=0x05b9e6)
+    await ctx.send(embed=embed)
+    jp.close()
+  else:
+    embed=discord.Embed(description="あなたにはこのコマンドを実行する権限がありません。\nこのコマンドは一般利用者には実行できません。",color=0xfa2911)
+    embed.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def fmimagegtrbgtbet(ctx, msg):
+  if ctx.message.author.id == 524872647042007067:
+    f = open(r'C:\Users\user\Documents\dispy\fukumiimage.txt', 'a', encoding='UTF-8')
+    await ctx.send(f"みぃって{msg}んだね！\nありがとう！")
+    f.write(f"{msg}、")
+    f.close()
+  else:
+    embed=discord.Embed(description="あなたにはこのコマンドを実行する権限がありません。\nこのコマンドは一般利用者には実行できません。",color=0xfa2911)
+    embed.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def fmimatgbeb(ctx):
+  if ctx.message.author.id == 524872647042007067:
+    f = open(r'C:\Users\user\Documents\dispy\fukumiimage.txt', encoding='UTF-8')
+    fl=f.read()
+    embed=discord.Embed(title="ふくみぃってどんなイメージ？",description=fl,color=0x05b9e6)
+    await ctx.send(embed=embed)
+    f.close()
+  else:
+    embed=discord.Embed(description="あなたにはこのコマンドを実行する権限がありません。\nこのコマンドは一般利用者には実行できません。",color=0xfa2911)
+    embed.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def kickhfhfuerhferfhe(ctx, use):
+  user = await bot.fetch_user(int(use))
+  embed=discord.Embed(title="ユーザーキック確認",description="本当にこのユーザーをキックしますか？\nよければ<:check2:805283656984952845>を、キャンセルの場合は<:error2:805283657412902930>を押してください。",color=0xfa2911)
+  embed.set_thumbnail(url=user.avatar_url)
+  embed.add_field(name="対象ユーザー", value=f"{user.name}#{user.discriminator}")
+  embed.add_field(name="実行ユーザー", value=ctx.message.author)
+  embed2=discord.Embed(title="ユーザーキック確認",description="5秒後にキックを実行します。少々お待ちください。",color=0xfa2911)
+  embed3=discord.Embed(description="ユーザーをキックしました。",color=0x05f752)
+  embed3.set_author(name="ユーザーキック完了", icon_url="https://cdn.discordapp.com/emojis/805241582399914044.png?v=1")
+  embed3.set_thumbnail(url=user.avatar_url)
+  embed3.add_field(name="対象ユーザー", value=f"{user.name}#{user.discriminator}")
+  embed3.add_field(name="実行ユーザー", value=ctx.message.author)
+  kmsg = await ctx.send(embed=embed)
+  await kmsg.add_reaction('<:check2:805283656984952845>')
+  await kmsg.add_reaction('<:error2:805283657412902930>')
+  target_reaction = await bot.wait_for_reaction(message=kmsg)
+  print("まちOK")
+  if target_reaction.user == msg.author:
+    print("おなじじゃない確認OK")
+    if target_reaction.reaction.emoji == '<:check2:805283656984952845>':
+      print("チェック準備OK")
+      await kmsg.delete()
+      print("けしOK")
+      kmsg2 = await ctx.send(embed=embed2)
+      time.sleep(5)
+      await kmsg2.edit(embed=embed3)
+      print("チェックOK")
+    elif target_reaction.reaction.emoji == '<:error2:805283657412902930>':
+      await kmsg.delete()
+      await ctx.send("キャンセルしました。")
+  else:
+    await kmsg.remove_reaction(target_reaction.reaction.emoji, target_reaction.user)
+
+@bot.command()
+async def serverinfo(ctx, svid):
+  guild = bot.get_guild(int(svid))
+  embed=discord.Embed(title="サーバー情報",description=f"サーバーID:{guild.id}\nサーバー名:{guild.name}\nオーナー名:{guild.owner.name}\nオーナーID:{guild.owner.id}\n",color=0x05b9e6)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def userinfo(ctx, usid):
+  usnm = bot.get_user(int(usid))
+  embed=discord.Embed(title="ユーザー情報",description=f"ユーザーID:{usnm.id}\nサーバー名:{usnm.name}",color=0x05b9e6)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def legrk(ctx):
+  html = requests.get(lrurl)
+  soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
+  lgrk = soup.select('strong')
+  lgrk2 = str(lgrk)
+  embed=discord.Embed(title="レギオンランカーズ順位表（すべて）",url="https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php",color=0xfcba03)
+  embed.add_field(name="トレパレ TOTAL", value=f"**1.{lgrk[0].contents[0]}　Score:{lgrk[1].contents[0].strip()}**\n2.{lgrk[2].contents[0]}　Score:{lgrk[3].contents[0].strip()}\n3.{lgrk[4].contents[0]}　Score:{lgrk[5].contents[0].strip()}\n4.{lgrk[6].contents[0]}　Score:{lgrk[7].contents[0].strip()}\n5.{lgrk[8].contents[0]}　Score:{lgrk[9].contents[0].strip()}")
+  embed.add_field(name="ゴールデンJP TOTAL", value=f"**1.{lgrk[20].contents[0]}　Score:{lgrk[21].contents[0].strip()}**\n2.{lgrk[22].contents[0]}　Score:{lgrk[23].contents[0].strip()}\n3.{lgrk[24].contents[0]}　Score:{lgrk[25].contents[0].strip()}\n4.{lgrk[26].contents[0]}　Score:{lgrk[27].contents[0].strip()}\n5.{lgrk[28].contents[0]}　Score:{lgrk[29].contents[0].strip()}")
+  embed.add_field(name="コズミックWIN TOTAL", value=f"**1.{lgrk[40].contents[0]}　Score:{lgrk[41].contents[0].strip()}**\n2.{lgrk[42].contents[0]}　Score:{lgrk[43].contents[0].strip()}\n3.{lgrk[44].contents[0]}　Score:{lgrk[45].contents[0].strip()}\n4.{lgrk[46].contents[0]}　Score:{lgrk[47].contents[0].strip()}\n5.{lgrk[48].contents[0]}　Score:{lgrk[49].contents[0].strip()}",inline=False)
+  embed.add_field(name="コズミックDUP TOTAL", value=f"**1.{lgrk[60].contents[0]}　Score:{lgrk[61].contents[0].strip()}**\n2.{lgrk[62].contents[0]}　Score:{lgrk[63].contents[0].strip()}\n3.{lgrk[64].contents[0]}　Score:{lgrk[65].contents[0].strip()}\n4.{lgrk[66].contents[0]}　Score:{lgrk[67].contents[0].strip()}\n5.{lgrk[68].contents[0]}　Score:{lgrk[69].contents[0].strip()}",inline=True)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def legrktp(ctx):
+  html = requests.get(lrurl)
+  soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
+  lgrk = soup.select('strong')
+  lgrk2 = str(lgrk)
+  embed=discord.Embed(title="レギオンランカーズ順位表（トレパレ TOTAL）",description=f"**1.{lgrk[0].contents[0]}　Score:{lgrk[1].contents[0].strip()}**\n2.{lgrk[2].contents[0]}　Score:{lgrk[3].contents[0].strip()}\n3.{lgrk[4].contents[0]}　Score:{lgrk[5].contents[0].strip()}\n4.{lgrk[6].contents[0]}　Score:{lgrk[7].contents[0].strip()}\n5.{lgrk[8].contents[0]}　Score:{lgrk[9].contents[0].strip()}",url="https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php",color=0xfcba03)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def legrkgjp(ctx):
+  html = requests.get(lrurl)
+  soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
+  lgrk = soup.select('strong')
+  lgrk2 = str(lgrk)
+  embed=discord.Embed(title="レギオンランカーズ順位表（ゴールデンJP TOTAL）",description=f"**1.{lgrk[20].contents[0]}　Score:{lgrk[21].contents[0].strip()}**\n2.{lgrk[22].contents[0]}　Score:{lgrk[23].contents[0].strip()}\n3.{lgrk[24].contents[0]}　Score:{lgrk[25].contents[0].strip()}\n4.{lgrk[26].contents[0]}　Score:{lgrk[27].contents[0].strip()}\n5.{lgrk[28].contents[0]}　Score:{lgrk[29].contents[0].strip()}",url="https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php",color=0xfcba03)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def legrkcf(ctx):
+  html = requests.get(lrurl)
+  soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
+  lgrk = soup.select('strong')
+  lgrk2 = str(lgrk)
+  embed=discord.Embed(title="レギオンランカーズ順位表（コズミックWIN TOTAL）",description=f"**1.{lgrk[40].contents[0]}　Score:{lgrk[41].contents[0].strip()}**\n2.{lgrk[42].contents[0]}　Score:{lgrk[43].contents[0].strip()}\n3.{lgrk[44].contents[0]}　Score:{lgrk[45].contents[0].strip()}\n4.{lgrk[46].contents[0]}　Score:{lgrk[47].contents[0].strip()}\n5.{lgrk[48].contents[0]}　Score:{lgrk[49].contents[0].strip()}",url="https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php",color=0xfcba03)
+  await ctx.send(embed=embed)
+
+@bot.command()
+async def legrkcfd(ctx):
+  html = requests.get(lrurl)
+  soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
+  lgrk = soup.select('strong')
+  lgrk2 = str(lgrk)
+  embed=discord.Embed(title="レギオンランカーズ順位表（コズミックDUP TOTAL）",description=f"**1.{lgrk[60].contents[0]}　Score:{lgrk[61].contents[0].strip()}**\n2.{lgrk[62].contents[0]}　Score:{lgrk[63].contents[0].strip()}\n3.{lgrk[64].contents[0]}　Score:{lgrk[65].contents[0].strip()}\n4.{lgrk[66].contents[0]}　Score:{lgrk[67].contents[0].strip()}\n5.{lgrk[68].contents[0]}　Score:{lgrk[69].contents[0].strip()}",url="https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php",color=0xfcba03)
+  await ctx.send(embed=embed)
+  
 bot.run(TOKEN)
