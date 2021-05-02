@@ -41,7 +41,7 @@ async def on_ready():
     guildone = str(bot.guilds)
     guildtwo = guildone.split(',')
     guildcount = len(guildtwo)
-    await bot.change_presence(activity=discord.Game(name=f"fm!help | {guildcount}サーバーがBOTを導入中"))
+    await bot.change_presence(activity=discord.Game(name=f"fm!help 1~4| {guildcount}サーバーがBOTを導入中"))
 
 @bot.event
 async def on_message(message):
@@ -128,7 +128,7 @@ async def help(ctx, page):
   hpage2.set_footer(text="2/4")
   hpage3=discord.Embed(title="コマンド一覧",description="**グローバルチャット**\n`gcjoin`:コマンドを実行したチャンネルにグローバルチャットを作成します。",color=0x05b9e6)
   hpage3.set_footer(text="3/4")
-  hpage4=discord.Embed(title="コマンド一覧",description="**期間限定**\n`legrk`:PNRレギオンランカーズの順位表が見れます。\n`legrktp`:PNRレギオンランカーズの順位表(トレパレTOTAL)が見れます。\n`legrkgjp`:PNRレギオンランカーズの順位表(GJPTOTAL)が見れます。\n`legrkcf`:PNRレギオンランカーズの順位表(CFWINTOTAL)が見れます。\n`legrkcfd`:PNRレギオンランカーズの順位表(CFDUPTOTAL)が見れます。",color=0x05b9e6)
+  hpage4=discord.Embed(title="コマンド一覧",description="**期間限定**\n`legrk`:PNRレギオンランカーズの順位表が見れます。\n`legrktp`:PNRレギオンランカーズの順位表(トレパレTOTAL)が見れます。\n`legrkgjp`:PNRレギオンランカーズの順位表(GJPTOTAL)が見れます。\n`legrkcf`:PNRレギオンランカーズの順位表(CFWINTOTAL)が見れます。\n`legrkcfd`:PNRレギオンランカーズの順位表(CFDUPTOTAL)が見れます。\n`myriadinfo`:PNRのミリアドJPゲームに関する情報が見れます。",color=0x05b9e6)
   hpage4.set_footer(text="4/4")
   hels=discord.Embed(description="ページが存在しません。\n現在取得可能なページ数は**3**です。",color=0xfa2911)
   hels.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
