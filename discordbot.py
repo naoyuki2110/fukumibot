@@ -491,4 +491,3 @@ async def myriadinfo(ctx):
   await ctx.send(embed=embed)
   
 bot.run(TOKEN)
-Test
