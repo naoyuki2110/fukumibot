@@ -1,3 +1,5 @@
 discord.py[voice]>=1.4.1
 requests
 bs4
+pyokaka
+googletrans
