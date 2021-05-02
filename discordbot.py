@@ -4,9 +4,11 @@ from discord.ext import commands
 import time
 import random
 import datetime
+from pyokaka import okaka
+from googletrans import Translator
 import requests
-import os
 from bs4 import BeautifulSoup
+import os
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
 intents=discord.Intents.default()
 intents.members=True
@@ -25,9 +27,11 @@ unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "�
 unsrc = ["青", "黄", "緑", "ライトグリーン", "ピンク", "あなたの好きな", "赤", "オレンジ", "紫", "エメラルドグリーン", "コバルトブルー", "藍", "青緑", "茜", "黄緑", "錆納戸", "紺", "朱", "青磁", "菫", "露草", "常盤", "砥粉", "紅赤", "萌葱", "瑠璃", "ターコイズブルー", "セルリアンブルー", "マラカイトグリーン", "ミッドナイトブルー", "フォレストグリーン"]
 unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "★ ★ ★ ☆ ☆", "★ ★ ★ ★ ☆", "★ ★ ★ ★ ★"]
 mentmsg = ["むっ、なにかな", "なんですみぃ？", "むぅ、いま腹立ててるからはなしかけないで！", "どうしたの？？", "すやすや...ん、むにゃ...", "おおーっ！どうしたのかな？なんでもきいてあげるよー！"]
+translator = Translator()
 ranreacc = 0
 thinkr = ["<:thonk:828451872217366588>", "<:authink:828451874314387497>"]
 lrurl = "https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php"
+ppqstmy = "https://patnetresort.com/myriad"
 
 @bot.event
 async def on_ready():
@@ -89,13 +93,16 @@ async def on_command_error(ctx, error):
         embed3.set_author(name="エラー", icon_url="https://cdn.discordapp.com/emojis/804911445900918784.png?v=1")
         await ctx.send(embed=embed3)
 
-@bot.command()
+@bot.command(aliases=["team","staff"])
 async def credit(ctx):
+  """
+  ふくみぃBOTの開発メンバーを表示します。
+  """
   user = await bot.fetch_user(524872647042007067)
   embed=discord.Embed(title="クレジット",description=f"1名\nBOT総合開発者:{user.name}#{user.discriminator}",color=0x05b9e6)
   await ctx.send(embed=embed)
 
-@bot.command()
+@bot.command(aliases=["dhelp"])
 async def devhelp(ctx):
   embed=discord.Embed(title="テスト中コマンド",description="**ユーティリティ**\n~~`fm!calc`:指定した和、差、積、商を表示します。<:alpha:812541506191491093>\n`fm!calc <四則演算(半角>`\n記述法は`fm!calchelp`をご覧ください\n`translate`:内容を指定した言語に翻訳します。<:alpha:812541506191491093>\n`fm!translate <ロケールID上2桁> <翻訳内容>`~~",color=0x05b9e6)
   await ctx.send(embed=embed)
@@ -292,6 +299,26 @@ async def gcjoin(ctx):
  await gcjoinmsg.edit(embed=embed5)
 
 @bot.command()
+async def kanc(ctx, *, msg):
+ cvresult = okaka.convert(msg)
+ embed=discord.Embed(description=cvresult,color=0x05b9e6)
+ embed.set_author(name="ローマ字→かな文字変換結果", icon_url="https://cdn.discordapp.com/emojis/812530847886213130.png?v=1")
+ await ctx.send(embed=embed)
+
+@bot.command()
+async def translatefgtgbgrb(ctx, locale, *, msg):
+  print("コマンドOK")
+  trsmsg = translator.translate('テスト', dest='en')
+  print("代入OK")
+  embed=discord.Embed(description=trsmsg.text,color=0x05b9e6)
+  print("Embed代入OK")
+  embed.set_author(name="翻訳結果", icon_url="https://cdn.discordapp.com/emojis/812893291540250645.png?v=1")
+  print("ユーザーOK")
+  await ctx.send(embed=embed)
+  print("送信OK")
+  print(trsmsg.text)
+
+@bot.command()
 async def webtitle(ctx, url):
   html = requests.get(url)
   soup = BeautifulSoup(html.content, "html.parser")
@@ -451,6 +478,16 @@ async def legrkcfd(ctx):
   lgrk = soup.select('strong')
   lgrk2 = str(lgrk)
   embed=discord.Embed(title="レギオンランカーズ順位表（コズミックDUP TOTAL）",description=f"**1.{lgrk[60].contents[0]}　Score:{lgrk[61].contents[0].strip()}**\n2.{lgrk[62].contents[0]}　Score:{lgrk[63].contents[0].strip()}\n3.{lgrk[64].contents[0]}　Score:{lgrk[65].contents[0].strip()}\n4.{lgrk[66].contents[0]}　Score:{lgrk[67].contents[0].strip()}\n5.{lgrk[68].contents[0]}　Score:{lgrk[69].contents[0].strip()}",url="https://patolesoft.net/Games/PatnetResort/PatolePusherQuintessence/LegionRankers.php",color=0xfcba03)
+  await ctx.send(embed=embed)
+
+@bot.command(aliases=["mrinfo"])
+async def myriadinfo(ctx):
+  html = requests.get(ppqstmy)
+  soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
+  myi = soup.select_one('.big').text
+  myi2 = soup.select('.big')
+  print(f"{myi}")
+  embed=discord.Embed(title="ミリアドJPゲーム情報",description=f"現在のミリアドJP枚数は**{myi.replace(',', '')}枚**です。\n次回のミリアドJPゲームは**{myi2[1].contents[0].replace('-', '月').replace(' ', '日 ').replace(':00', '時').replace('0', '').strip()}**に開催されます。",color=0x05b9e6)
   await ctx.send(embed=embed)
   
 bot.run(TOKEN)
