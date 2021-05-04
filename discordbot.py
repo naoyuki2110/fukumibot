@@ -62,7 +62,7 @@ async def on_message(message):
     await message.channel.send("こんばんは！遅くまで大変だね")
   if "おはよう" in message.content:
     await message.channel.send("おはようだみぃ！今日も一日よろしくみぃ！")
-  if ":thinking:" in message.content:
+  if "\N{THINKING FACE}" in message.content:
     await message.channel.send(":thinking:")
   if "お願いします" in message.content:
     await message.channel.send("本当に、お願いしますっ...！")
