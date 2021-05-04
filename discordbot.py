@@ -54,8 +54,22 @@ async def on_message(message):
     await message.add_reaction('<:DiscordLogo:828436198157975563>')
   if "ディスコ" in message.content:
     await message.add_reaction('<:DiscordLogo:828436198157975563>')
+  if "だろう" in message.content:
+    await message.channel.send("そうだろう")
+  if "こんにちは" in message.content:
+    await message.channel.send("こんだみぃ！")
+  if "こんばんは" in message.content:
+    await message.channel.send("こんばんは！遅くまで大変だね")
+  if "おはよう" in message.content:
+    await message.channel.send("おはようだみぃ！今日も一日よろしくみぃ！")
   if ":thinking:" in message.content:
-    await message.channel.send(random.choice(thinkr))
+    await message.channel.send(":thinking:")
+  if "お願いします" in message.content:
+    await message.channel.send("本当に、お願いしますっ...！")
+  if "よろしく" in message.content:
+    await message.channel.send("こちらこそよろしくみぃ")
+  if "誤字" in message.content:
+    await message.channel.send("みぃは御侍しなうみぃいよ...！？＞")
   if bot.user in message.mentions:
     await message.channel.send(random.choice(mentmsg))
   GLOBAL_CH_NAME = "fukumi-global" # グローバルチャットのチャンネル名
