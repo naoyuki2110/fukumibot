@@ -501,7 +501,7 @@ async def myriadinfo(ctx):
   myi = soup.select_one('.big').text
   myi2 = soup.select('.big')
   print(f"{myi}")
-  embed=discord.Embed(title="ミリアドJPゲーム情報",description=f"現在のミリアドJP枚数は**{myi.replace(',', '')}枚**です。\n次回のミリアドJPゲームは**{myi2[1].contents[0].replace('-', '月').replace(' ', '日 ').replace(':00', '時').replace('0', '').strip()}**に開催されます。",color=0x05b9e6)
+  embed=discord.Embed(title="ミリアドJPゲーム情報",description=f"現在のミリアドJP枚数は**{myi.replace(',', '')}枚**です。\n次回のミリアドJPゲームは**2021年{myi2[1].contents[0].replace('-', '月').replace(' ', '日 ').replace(':00', '時').strip()}**に開催されます。\n現在の時刻は**{tme.strftime('%Y年%m月%d日 %H時%M分%S秒')}**です。",color=0x05b9e6)
   await ctx.send(embed=embed)
   
 bot.run(TOKEN)
