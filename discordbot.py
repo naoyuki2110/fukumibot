@@ -496,6 +496,7 @@ async def legrkcfd(ctx):
 
 @bot.command(aliases=["mrinfo"])
 async def myriadinfo(ctx):
+  tme = datetime.datetime.now()
   html = requests.get(ppqstmy)
   soup = BeautifulSoup(html.content, "html.parser", from_encoding='utf-8')
   myi = soup.select_one('.big').text
