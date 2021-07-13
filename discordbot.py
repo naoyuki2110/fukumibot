@@ -8,6 +8,7 @@ from pyokaka import okaka
 from googletrans import Translator
 import requests
 from bs4 import BeautifulSoup
+import asyncio
 import os
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
 intents=discord.Intents.default()
@@ -318,10 +319,10 @@ async def webtitle(ctx, url):
   await ctx.send(embed=embed)
 
 @bot.command()
-async def fmjpc3721632367813yed(ctx):
+async def fmjpc(ctx):
   agojpcmsg = await ctx.send("<a:loading1:812923199116410940>抽選中です...")
   jpcsleep = random.randint(3,15)
-  time.sleep(jpcsleep)
+  await asyncio.sleep(jpcsleep)
   await agojpcmsg.delete()
   jpcrand = random.randint(1,100)
   if jpcrand >= 1 and jpcrand <= 50:
@@ -334,15 +335,15 @@ async def fmjpc3721632367813yed(ctx):
     jtme = datetime.datetime.now()
     jprand = random.randint(1000,99999)
     await ctx.send(f"<@{ctx.message.author.id}>**J A C K P O T !**\n**Congratulations!!!**\nJACKPOT枚数**{jprand}枚！**\nまた挑戦してだみぃ！")
-    f = open(r'C:\Users\user\Documents\dispy\fukumijackpot.txt', 'w')
+    f = open('fukumijackpot.txt', 'w')
     datalist = [f'獲得者:**{ctx.message.author}**\n', f'JACKPOT枚数:**{jprand}枚**\n', jtme.strftime('%Y/%m/%d %H:%M:%S')]
     f.writelines(datalist)
     f.close()
 
 @bot.command()
-async def lastjpftrgbtrbt(ctx):
+async def lastjpdev(ctx):
   if ctx.message.author.id == 524872647042007067:
-    jp=open(r'C:\Users\user\Documents\dispy\fukumijackpot.txt')
+    jp=open('fukumijackpot.txt')
     jpline=jp.read()
     embed=discord.Embed(title="ふくみぃJACKPOT最終獲得者",description=jpline,color=0x05b9e6)
     await ctx.send(embed=embed)
@@ -355,7 +356,7 @@ async def lastjpftrgbtrbt(ctx):
 @bot.command()
 async def fmimagegtrbgtbet(ctx, msg):
   if ctx.message.author.id == 524872647042007067:
-    f = open(r'C:\Users\user\Documents\dispy\fukumiimage.txt', 'a', encoding='UTF-8')
+    f = open('fukumiimage.txt', 'a', encoding='UTF-8')
     await ctx.send(f"みぃって{msg}んだね！\nありがとう！")
     f.write(f"{msg}、")
     f.close()
@@ -367,7 +368,7 @@ async def fmimagegtrbgtbet(ctx, msg):
 @bot.command()
 async def fmimatgbeb(ctx):
   if ctx.message.author.id == 524872647042007067:
-    f = open(r'C:\Users\user\Documents\dispy\fukumiimage.txt', encoding='UTF-8')
+    f = open('fukumiimage.txt', encoding='UTF-8')
     fl=f.read()
     embed=discord.Embed(title="ふくみぃってどんなイメージ？",description=fl,color=0x05b9e6)
     await ctx.send(embed=embed)
