@@ -28,6 +28,12 @@ unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "�
 unsrc = ["青", "黄", "緑", "ライトグリーン", "ピンク", "あなたの好きな", "赤", "オレンジ", "紫", "エメラルドグリーン", "コバルトブルー", "藍", "青緑", "茜", "黄緑", "錆納戸", "紺", "朱", "青磁", "菫", "露草", "常盤", "砥粉", "紅赤", "萌葱", "瑠璃", "ターコイズブルー", "セルリアンブルー", "マラカイトグリーン", "ミッドナイトブルー", "フォレストグリーン"]
 unsrs = ["☆ ☆ ☆ ☆ ☆", "★ ☆ ☆ ☆ ☆", "★ ★ ☆ ☆ ☆", "★ ★ ★ ☆ ☆", "★ ★ ★ ★ ☆", "★ ★ ★ ★ ★"]
 mentmsg = ["むっ、なにかな", "なんですみぃ？", "むぅ、いま腹立ててるからはなしかけないで！", "どうしたの？？", "すやすや...ん、むにゃ...", "おおーっ！どうしたのかな？なんでもきいてあげるよー！"]
+rurukamsg = ["パトルプッシャープレゼンスへ、ようこそ！", "おめでとうございます！", "ワクワク...！", "ドキドキ...！", "スフィアがポケットに入ると、リールが停止します。", "もう一度抽選します。ジャックポットの確率は、10分の1です。", "ジャックポットチャンスの本抽選、いよいよ始まります！", "ナーイス！ジャックポットゲートが3つになりました！", "確率変動に突入しました！", "ジャックポットチャンス獲得っ！", "クアドラチャンス！"]
+kirikamsg = ["...ようこそ。ルーレットへ", "...5倍", "...メダル...獲得", "...32番", "...スタート", "ミリアド...獲得...おめでとう", "おすすめは、「0」", "...ルーレットで、待ってる"]
+yuimsg = ["ブラックジャックへようこそー！", "カード配りまーす", "どーお？カード、追加しちゃう？", "私に勝てるつもり？いいよ、やってやろうじゃない", "スプリットできるけど、どうする？", "えっへっへ、おいしそっ", "まもなく、BETタイムが終了します", "おやおや、バーストですなぁ(´・ω・`)", "やるねぇ！", "今回はながーく続くように、願ってます！"]
+momomsg = ["リーチのステーションが増えたね！", "なんで笑ってるの！", "モモはね、えっとね、このステーションに賭ける！", "ゲームスタート！", "さあ始まりました、ジャックポットチャンス！", "10球クリア！まだまだいけるよね？", "チャンスタイム！2つのスートをゲットできそう！ワクワクするっ！", "すっごぉーい！モモ、うまくやる！", "クラブ！"]
+nozomimsg = ["フルールチェインへようこそ。", "今回の幸運は、いったい誰に舞い降りるのでしょうか！？", "ベット枚数を変更しますか？", "楽しみです！", "ダブルアップをスタートします。グレープです！", "メダル獲得っ！", "ジャックポットを獲得した方が現れたようですよ", "残念でした...", "メダルWIN！", "ワクワクします！"]
+patolemsg = ["using UnityEngine.UI", "ご迷惑をお掛けして申し訳ございません。", "わかりづらい表記で申し訳ございません。", "5139！", "PNR2更新しないと..."]
 translator = Translator()
 ranreacc = 0
 thinkr = ["<:thonk:828451872217366588>", "<:authink:828451874314387497>"]
@@ -49,6 +55,20 @@ async def on_message(message):
   await bot.process_commands(message)
   if message.author.bot:
     return
+  if message.content == "るるか":
+    await message.channel.send(random.choice(rurukamsg))
+  if message.content == "キリカ":
+    await message.channel.send(random.choice(kirikamsg))
+  if message.content == "ゆうい":
+    await message.channel.send(random.choice(yuimsg))
+  if message.content == "モモ":
+    await message.channel.send(random.choice(momomsg))
+  if message.content == "のぞみ":
+    await message.channel.send(random.choice(nozomimsg))
+  if message.content == "ぱとぇ":
+    await message.channel.send(random.choice(patolemsg))
+  if message.content == "ぱとえ":
+    await message.channel.send(random.choice(patolemsg))
   if bot.user in message.mentions:
     await message.channel.send(random.choice(mentmsg))
   GLOBAL_CH_NAME = "fukumi-global" # グローバルチャットのチャンネル名
